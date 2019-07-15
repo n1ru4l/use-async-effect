@@ -1,0 +1,54 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+
+references:
+  js_deps_cache_key: &js_deps_cache_key v8-dependency-js-deps-{{ checksum "yarn.lock" }}
+  js_deps_backup_cache_key: &js_deps_backup_cache_key v8-dependency-js-deps
+
+jobs:
+  build-job:
+    docker:
+      - image: circleci/node:8.16.0@sha256:366b8e06c7cfdf7d70e14f1ef204b35c4870ea4dc47b94cc08a3fc5e1c5ea8a4
+    working_directory: /tmp/workspace
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - *js_deps_cache_key
+            - *js_deps_backup_cache_key
+      - run: yarn install
+      - save_cache:
+          key: *js_deps_cache_key
+          paths:
+            - node_modules
+      - run: yarn test
+      - run: yarn lint
+      - run: yarn build
+
+  deploy-job:
+    docker:
+      - image: circleci/node:8.16.0@sha256:90cf94eb025c69bdba3839d568bfd72c3c38277a2a7ee15a783a312d48cbb2c4
+    working_directory: /tmp/workspace
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - *js_deps_cache_key
+            - *js_deps_backup_cache_key
+      - run: yarn build
+      - run: yarn semantic-release
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build-job
+      - deploy-job:
+          requires:
+            - build-job
+          filters:
+            branches:
+              only: master
