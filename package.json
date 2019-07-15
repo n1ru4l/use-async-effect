@@ -1,0 +1,77 @@
+{
+  "name": "@n1ru4l/use-async-effect",
+  "version": "0.0.0-semantically-released",
+  "license": "MIT",
+  "author": {
+    "name": "Laurin Quast",
+    "email": "laurinquast@googlemail.com",
+    "url": "https://github.com/n1ru4l"
+  },
+  "homepage": "https://github.com/n1ru4l/use-async-effect#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/n1ru4l/use-async-effect"
+  },
+  "bugs": {
+    "url": "https://github.com/n1ru4l/use-async-effect/issues"
+  },
+  "keywords": [
+    "react",
+    "async",
+    "hook"
+  ],
+  "module": "dist/module/index.js",
+  "main": "dist/main/index.js",
+  "typings": "dist/module/index.d.ts",
+  "devDependencies": {
+    "@testing-library/react": "8.0.4",
+    "@types/jest": "24.0.15",
+    "@types/react": "16.8.23",
+    "@typescript-eslint/eslint-plugin": "1.11.0",
+    "@typescript-eslint/parser": "1.11.0",
+    "doctoc": "1.4.0",
+    "eslint": "6.0.1",
+    "eslint-config-prettier": "6.0.0",
+    "eslint-plugin-jest": "22.7.2",
+    "eslint-plugin-react": "7.14.2",
+    "husky": "3.0.0",
+    "jest": "24.8.0",
+    "lint-staged": "9.2.0",
+    "prettier": "1.18.2",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "semantic-release": "15.13.18",
+    "ts-jest": "24.0.2",
+    "typescript": "3.5.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.6"
+  },
+  "scripts": {
+    "precommit": "lint-staged",
+    "lint": "eslint --ignore-path .gitignore --ext .ts,.tsx \"src/**/*\"",
+    "test": "jest",
+    "build:module": "tsc --target es2017 --outDir dist/module",
+    "build:main": "tsc --target es5 --outDir dist/main",
+    "build": "yarn build:module && yarn build:main"
+  },
+  "files": [
+    "dist/**/*",
+    "LICENSE",
+    "README.md"
+  ],
+  "lint-staged": {
+    "*.{yml,ts,tsx,js,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{ts,tsx,js}": [
+      "eslint",
+      "git add"
+    ],
+    "README.md": [
+      "doctoc",
+      "git add"
+    ]
+  }
+}
