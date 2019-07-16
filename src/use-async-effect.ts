@@ -4,7 +4,7 @@ const noop = () => {};
 
 export const useAsyncEffect = (
   createGenerator: (
-    setCancelHandler?: (
+    setCancelHandler: (
       onCancel?: null | (() => void),
       onCancelError?: null | ((err: Error) => void)
     ) => void
