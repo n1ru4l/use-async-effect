@@ -90,7 +90,7 @@ const MyComponent = ({ filter }) => {
 
 ```jsx
 import React from "react";
-import useAsyncEffect from "@n1ru4l/use-aync-effect";
+import useAsyncEffect from "@n1ru4l/use-async-effect";
 
 const MyComponent = ({ filter }) => {
   const [data, setData] = useState(null);
