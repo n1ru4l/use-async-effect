@@ -190,7 +190,7 @@ const MyDoggoImage = () => {
 };
 ```
 
-[![Edit use-async-effect doggo demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/use-async-effect-doggo-demo-qrqix?fontsize=14)
+[![Edit use-async-effect doggo cancel demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/use-async-effect-doggo-cancel-demo-6rxvd?fontsize=14)
 
 ## API
 
