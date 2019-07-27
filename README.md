@@ -162,7 +162,7 @@ const MyDoggoImage = () => {
 
 #### Cancelling an in-flight `fetch` request
 
-You can react to cancels, that might occure while a promise has not resolved yet, by registering a handler via `onCancel`.
+You can react to cancels, that might occur while a promise has not resolved yet, by registering a handler via `onCancel`.
 After an async operation has been processed, the `onCancel` handler is automatically being unset.
 
 ```jsx
