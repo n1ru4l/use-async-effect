@@ -172,7 +172,7 @@ import useAsyncEffect from "@n1ru4l/use-async-effect";
 const MyDoggoImage = () => {
   const [doggoImageSrc, setDoggoImageSrc] = useState(null);
   useAsyncEffect(
-    function*() {
+    function*(onCancel) {
       const abortController = new AbortController();
       onCancel(() => {
         abortController.abort();
