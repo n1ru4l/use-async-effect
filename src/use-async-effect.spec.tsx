@@ -6,6 +6,7 @@ afterEach(cleanup);
 
 it("can be used", () => {
   const TestComponent: React.FC<{}> = () => {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     useAsyncEffect(function*() {}, []);
     return null;
   };
