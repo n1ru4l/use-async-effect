@@ -201,7 +201,7 @@ Runs a effect that includes async operations. The effect ins cancelled upon depe
 ```ts
 function useAsyncEffect(
   generator: (
-    setCancelHandler?: (
+    setCancelHandler: (
       onCancel?: null | (() => void),
       onCancelError?: null | ((err: Error) => void)
     ) => void
@@ -212,7 +212,7 @@ function useAsyncEffect(
 
 ## Contributing
 
-Please check our contribution guides [Contributing](CONTRIBUTING.md).
+Please check our contribution guides [Contributing](https://github.com/n1ru4l/use-async-effect/blob/master/Contributing.md).
 
 ## LICENSE
 
