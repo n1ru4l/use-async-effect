@@ -19,6 +19,7 @@ Simplify your async `useEffect` code with a [generator function](https://develop
   - [Usage Instructions](#usage-instructions)
     - [Basic Usage](#basic-usage)
     - [Cancelling an in-flight `fetch` request](#cancelling-an-in-flight-fetch-request)
+    - [Clean-Up Handler](#clean-up-handler)
 - [API](#api)
   - [`useAsyncEffect`](#useasynceffect)
 - [Contributing](#contributing)
@@ -30,15 +31,16 @@ Simplify your async `useEffect` code with a [generator function](https://develop
 
 Doing async stuff with `useEffect` clutters your code:
 
-- You cannot pass an async function to `useEffect`
-- You have to manually keep track whether you can set state or not
-- You cannot cancel an async function
+- 😖 You cannot pass an async function to `useEffect`
+- 🤢 You cannot cancel an async function
+- 🤮 You have to manually keep track whether you can set state or not
 
 This micro library tries to solve this issue by using generator functions:
 
-- Pass a generator to `useAsyncEffect`
-- Automatically stop running the generator after the dependency list has changed or the component did unmount
-- Optional cancelation handling via events e.g. for canceling your `fetch` request with [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController#Examples)
+- ✅ Pass a generator to `useAsyncEffect`
+- ✅ Return cleanup function from generator function
+- ✅ Automatically stop running the generator after the dependency list has changed or the component did unmount
+- ✅ Optional cancelation handling via events e.g. for canceling your `fetch` request with [`AbortController`](https://developer.mozilla.org/en-US/docs/Web/API/AbortController#Examples)
 
 ## Example
 
@@ -191,6 +193,36 @@ const MyDoggoImage = () => {
 ```
 
 [![Edit use-async-effect doggo cancel demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/use-async-effect-doggo-cancel-demo-6rxvd?fontsize=14)
+
+#### Clean-Up Handler
+
+```jsx
+import React, { useState } from "react";
+import useAsyncEffect from "@n1ru4l/use-async-effect";
+
+const MyDoggoImage = () => {
+  const [doggoImageSrc, setDoggoImageSrc] = useState(null);
+  useAsyncEffect(
+    function*() {
+      const { message } = yield fetch(
+        "https://dog.ceo/api/breeds/image/random"
+      );
+      setDoggoImageSrc(message);
+
+      const listener = () => {
+        console.log("I LOVE DOGGIES", message);
+      };
+      window.addEventListener("mousemove", listener);
+      return () => window.removeEventListener("mousemove", listener);
+    },
+    [setDoggoImageSrc]
+  );
+
+  return doggoImageSrc ? <img src={doggoImageSrc} /> : null;
+};
+```
+
+[![Edit use-async-effect cleanup doggo demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/use-async-effect-doggo-demo-w1zlh?fontsize=14)
 
 ## API
 

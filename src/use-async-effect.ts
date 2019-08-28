@@ -25,6 +25,7 @@ export const useAsyncEffect = (
         onCancelError = cancelErrorHandler || noop;
       }
     );
+    let cleanupHandler = noop;
 
     const run = async () => {
       let result = { value: undefined, done: false };
@@ -52,12 +53,16 @@ export const useAsyncEffect = (
         onCancel = noop;
         onCancelError = noop;
       } while (result.done === false);
+      if (result.value) {
+        cleanupHandler = result.value;
+      }
     };
     run();
 
     return () => {
       isCanceled = true;
       onCancel();
+      cleanupHandler();
     };
   }, deps);
 };
