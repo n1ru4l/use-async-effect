@@ -20,7 +20,7 @@ Simplify your async `useEffect` code with a [generator function](https://develop
   - [Usage Instructions](#usage-instructions)
     - [Basic Usage](#basic-usage)
     - [Cancelling an in-flight `fetch` request](#cancelling-an-in-flight-fetch-request)
-    - [Clean-Up Handler](#clean-up-handler)
+    - [Clean-Up Handler](#cleanup-handler)
     - [Setup eslint for `eslint-plugin-react-hooks`](#setup-eslint-for-eslint-plugin-react-hooks)
 - [API](#api)
   - [`useAsyncEffect`](#useasynceffect)
@@ -138,7 +138,7 @@ or
 
 ### Usage Instructions
 
-Works like `useEffect`, but with a generator function and without a cleanup function.
+Works like `useEffect`, but with a generator function.
 
 #### Basic Usage
 
@@ -196,7 +196,7 @@ const MyDoggoImage = () => {
 
 [![Edit use-async-effect doggo cancel demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/use-async-effect-doggo-cancel-demo-6rxvd?fontsize=14)
 
-#### Clean-Up Handler
+#### Cleanup Handler
 
 ```jsx
 import React, { useState } from "react";
