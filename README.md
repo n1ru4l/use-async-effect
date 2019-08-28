@@ -10,6 +10,7 @@ Simplify your async `useEffect` code with a [generator function](https://develop
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
 - [The problem](#the-problem)
 - [Example](#example)
   - [Before 😖](#before-)
@@ -20,6 +21,7 @@ Simplify your async `useEffect` code with a [generator function](https://develop
     - [Basic Usage](#basic-usage)
     - [Cancelling an in-flight `fetch` request](#cancelling-an-in-flight-fetch-request)
     - [Clean-Up Handler](#clean-up-handler)
+    - [Setup eslint for `eslint-plugin-react-hooks`](#setup-eslint-for-eslint-plugin-react-hooks)
 - [API](#api)
   - [`useAsyncEffect`](#useasynceffect)
 - [Contributing](#contributing)
@@ -223,6 +225,25 @@ const MyDoggoImage = () => {
 ```
 
 [![Edit use-async-effect cleanup doggo demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/use-async-effect-doggo-demo-w1zlh?fontsize=14)
+
+#### Setup eslint for `eslint-plugin-react-hooks`
+
+You need to configure the `react-hooks/exhaustive-deps` plugin to treat `useAsyncEffect` as a hook with dependencies.
+
+Add the following to your eslint config file:
+
+```json
+{
+  "rules": {
+    "react-hooks/exhaustive-deps": [
+      "warn",
+      {
+        "additionalHooks": "useAsyncEffect"
+      }
+    ]
+  }
+}
+```
 
 ## API
 
