@@ -295,11 +295,67 @@ it("onCancel second parameter for error handling", async done => {
 
   const { unmount } = render(<TestComponent />);
   unmount();
-
   await Promise.resolve();
 
   expect(callable).toHaveBeenCalledTimes(1);
   expect(callable).toHaveBeenNthCalledWith(1, "lel");
 
+  done();
+});
+
+it("calls a cleanup function returned by the generator when unmounting", async done => {
+  const callable = jest.fn();
+
+  const TestComponent: React.FC<{}> = () => {
+    useAsyncEffect(function*() {
+      yield Promise.resolve();
+      return () => {
+        callable();
+      };
+    }, []);
+    return null;
+  };
+
+  const { unmount } = render(<TestComponent />);
+  await Promise.resolve();
+
+  expect(callable).toHaveBeenCalledTimes(0);
+
+  unmount();
+  expect(callable).toHaveBeenCalledTimes(1);
+  done();
+});
+
+it("calls a clenup function returned by the generator when dependencies change", async done => {
+  const callable = jest.fn();
+
+  let setState: (i: number) => void = () => 1;
+
+  const TestComponent: React.FC<{}> = () => {
+    const [state, _setState] = React.useState(0);
+    setState = _setState;
+    useAsyncEffect(
+      function*() {
+        yield Promise.resolve();
+        return () => {
+          callable();
+        };
+      },
+      [state]
+    );
+    return null;
+  };
+
+  const { unmount } = render(<TestComponent />);
+  await Promise.resolve();
+
+  act(() => {
+    setState(1);
+  });
+  await Promise.resolve();
+
+  expect(callable).toHaveBeenCalledTimes(1);
+  unmount();
+  expect(callable).toHaveBeenCalledTimes(2);
   done();
 });
