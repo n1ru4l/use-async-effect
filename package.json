@@ -30,19 +30,19 @@
     "@typescript-eslint/eslint-plugin": "2.0.0",
     "@typescript-eslint/parser": "2.0.0",
     "doctoc": "1.4.0",
-    "eslint": "6.2.2",
+    "eslint": "6.3.0",
     "eslint-config-prettier": "6.1.0",
-    "eslint-plugin-jest": "22.15.2",
+    "eslint-plugin-jest": "22.16.0",
     "eslint-plugin-react": "7.14.3",
     "husky": "3.0.4",
     "jest": "24.9.0",
-    "lint-staged": "9.2.3",
+    "lint-staged": "9.2.5",
     "prettier": "1.18.2",
     "react": "16.9.0",
     "react-dom": "16.9.0",
     "semantic-release": "15.13.24",
     "ts-jest": "24.0.2",
-    "typescript": "3.5.3"
+    "typescript": "3.6.2"
   },
   "peerDependencies": {
     "react": "^16.8.6"
