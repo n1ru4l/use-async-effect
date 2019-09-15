@@ -28,7 +28,8 @@ export const useAsyncEffect = (
     let cleanupHandler = noop;
 
     const run = async () => {
-      let result = { value: undefined, done: false };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let result: IteratorResult<any> = { value: undefined, done: false };
       do {
         result = generator.next(result.value);
         if (result.value && result.value.then) {
