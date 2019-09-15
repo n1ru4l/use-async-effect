@@ -86,7 +86,7 @@ const MyComponent = ({ filter }) => {
         controller.abort();
       }
     };
-  }, [setError, setData]);
+  }, [setData]);
 };
 ```
 
@@ -121,9 +121,10 @@ const MyComponent = ({ filter }) => {
 
       setData(data);
     },
-    [setError, setData]
+    [setData]
   );
 };
+
 ```
 
 ## Usage
