@@ -40,6 +40,7 @@
     "prettier": "1.18.2",
     "react": "16.9.0",
     "react-dom": "16.9.0",
+    "rimraf": "3.0.0",
     "semantic-release": "15.13.24",
     "ts-jest": "24.0.2",
     "typescript": "3.6.2"
@@ -52,7 +53,7 @@
     "test": "jest",
     "build:module": "tsc --target es2017 --outDir dist/module",
     "build:main": "tsc --target es5 --outDir dist/main",
-    "build": "yarn build:module && yarn build:main"
+    "build": "rimraf dist && yarn build:module && yarn build:main"
   },
   "files": [
     "dist/**/*",
