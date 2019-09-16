@@ -56,22 +56,18 @@ const MyComponent = ({ filter }) => {
 
   useEffect(() => {
     let isCanceled = false;
-    let isFetchPending = false;
+    const controller = new AbortController();
 
     const runHandler = async () => {
-      const controller = new AbortController();
       try {
-        isFetchPending = true;
         const data = await fetch("/data?filter=" + filter, {
           signal: controller.signal
         }).then(res => res.json());
-        isFetchPending = false;
         if (isCanceled) {
           return;
         }
         setData(data);
       } catch (err) {
-        isFetchPending = false;
         if (err.name === "AbortError") {
           return;
         }
@@ -82,9 +78,7 @@ const MyComponent = ({ filter }) => {
     runHandler();
     return () => {
       isCanceled = true;
-      if (isFetchPending) {
-        controller.abort();
-      }
+      controller.abort();
     };
   }, [setData]);
 };
