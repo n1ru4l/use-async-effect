@@ -359,3 +359,34 @@ it("calls a clenup function returned by the generator when dependencies change",
   expect(callable).toHaveBeenCalledTimes(2);
   done();
 });
+
+it("calls latest generator reference upon dependency change", async done => {
+  const callable = jest.fn();
+  let setState: (i: number) => void = () => 1;
+
+  const TestComponent: React.FC<{}> = () => {
+    const [state, _setState] = React.useState(0);
+    setState = _setState;
+    useAsyncEffect(
+      function*() {
+        yield Promise.resolve();
+        callable(state);
+      },
+      [state]
+    );
+    return null;
+  };
+
+  const { unmount } = render(<TestComponent />);
+  await Promise.resolve();
+  expect(callable).toHaveBeenCalledWith(0);
+
+  act(() => {
+    setState(1);
+  });
+  await Promise.resolve();
+
+  expect(callable).toHaveBeenCalledWith(1);
+  unmount();
+  done();
+});
