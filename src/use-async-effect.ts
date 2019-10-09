@@ -15,6 +15,10 @@ export const useAsyncEffect = (
   const generatorRef = useRef(createGenerator);
 
   useEffect(() => {
+    generatorRef.current = createGenerator;
+  });
+
+  useEffect(() => {
     let isCanceled = false;
     let onCancel = noop;
     let onCancelError = noop as (err: Error) => void;
@@ -66,8 +70,4 @@ export const useAsyncEffect = (
       cleanupHandler();
     };
   }, deps);
-
-  useEffect(() => {
-    generatorRef.current = createGenerator;
-  });
 };
