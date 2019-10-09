@@ -214,7 +214,7 @@ it("does throw promise rejections", async done => {
   render(<TestComponent />);
 });
 
-it("logs warnings about uncatched promises to the console", async done => {
+it("logs error about uncatched promises to the console", async done => {
   const TestComponent: React.FC<{}> = () => {
     useAsyncEffect(function*() {
       yield Promise.reject(new Error("Something went wrong."));
@@ -225,7 +225,7 @@ it("logs warnings about uncatched promises to the console", async done => {
   const spy = jest.spyOn(console, "error").mockImplementation();
   render(<TestComponent />);
   await Promise.resolve();
-  expect(console.error).toHaveBeenCalledTimes(1);
+  expect(console.error).toHaveBeenCalledTimes(2);
   spy.mockRestore();
   done();
 });

@@ -42,7 +42,8 @@ export const useAsyncEffect = (
             try {
               generator.throw(err);
             } catch (err) {
-              console.error(`Unhandled promise rejection: '${err.message}'.`);
+              console.error(`[use-async-effect] Unhandled promise rejection.`);
+              console.error(err);
               return;
             }
           }
