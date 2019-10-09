@@ -13,7 +13,6 @@ export const useAsyncEffect = (
   deps: React.DependencyList
 ) => {
   const generatorRef = useRef(createGenerator);
-  generatorRef.current = createGenerator;
 
   useEffect(() => {
     let isCanceled = false;
@@ -66,4 +65,8 @@ export const useAsyncEffect = (
       cleanupHandler();
     };
   }, deps);
+
+  useEffect(() => {
+    generatorRef.current = createGenerator;
+  });
 };
