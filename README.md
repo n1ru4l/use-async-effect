@@ -67,12 +67,7 @@ const MyComponent = ({ filter }) => {
           return;
         }
         setData(data);
-      } catch (err) {
-        if (err.name === "AbortError") {
-          return;
-        }
-        // identify and handle other errors here
-      }
+      } catch (err) {}
     };
 
     runHandler();
@@ -80,7 +75,7 @@ const MyComponent = ({ filter }) => {
       isCanceled = true;
       controller.abort();
     };
-  }, [setData]);
+  }, [filter]);
 };
 ```
 
@@ -97,17 +92,7 @@ const MyComponent = ({ filter }) => {
     function*(onCancel) {
       const controller = new AbortController();
 
-      onCancel(
-        () => {
-          controller.abort();
-        },
-        err => {
-          if (err.name === "AbortError") {
-            return;
-          }
-          // handle unexpected errors raised during cancel here
-        }
-      );
+      onCancel(() => controller.abort());
 
       const data = yield fetch("/data?filter=" + filter, {
         signal: controller.signal
@@ -115,7 +100,7 @@ const MyComponent = ({ filter }) => {
 
       setData(data);
     },
-    [setData]
+    [filter]
   );
 };
 
@@ -150,7 +135,7 @@ const MyDoggoImage = () => {
       ).then(res => res.json());
       setDoggoImageSrc(message);
     },
-    [setDoggoImageSrc]
+    []
   );
 
   return doggoImageSrc ? <img src={doggoImageSrc} /> : null;
@@ -182,7 +167,7 @@ const MyDoggoImage = () => {
       );
       setDoggoImageSrc(message);
     },
-    [setDoggoImageSrc]
+    []
   );
 
   return doggoImageSrc ? <img src={doggoImageSrc} /> : null;
@@ -212,7 +197,7 @@ const MyDoggoImage = () => {
       window.addEventListener("mousemove", listener);
       return () => window.removeEventListener("mousemove", listener);
     },
-    [setDoggoImageSrc]
+    []
   );
 
   return doggoImageSrc ? <img src={doggoImageSrc} /> : null;
