@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const noop = () => {};
+const noop = () => { };
 
 export const useAsyncEffect = (
   createGenerator: (
@@ -9,7 +9,7 @@ export const useAsyncEffect = (
       onCancelError?: null | ((err: Error) => void)
     ) => void
   ) => // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  IterableIterator<any>,
+    Iterator<any, any, any>,
   deps: React.DependencyList
 ) => {
   const generatorRef = useRef(createGenerator);
