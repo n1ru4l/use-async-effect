@@ -233,13 +233,13 @@ Runs a effect that includes async operations. The effect ins cancelled upon depe
 
 ```ts
 function useAsyncEffect(
-  generator: (
+createGenerator: (
     setCancelHandler: (
       onCancel?: null | (() => void),
       onCancelError?: null | ((err: Error) => void)
     ) => void
-  ) => IterableIterator<any>,
-  dependencyList: React.DependencyList
+  ) => Iterator<any, any, any>,
+  deps: React.DependencyList
 ): void;
 ```
 
