@@ -233,7 +233,7 @@ Runs a effect that includes async operations. The effect ins cancelled upon depe
 
 ```ts
 function useAsyncEffect(
-createGenerator: (
+  createGenerator: (
     setCancelHandler: (
       onCancel?: null | (() => void),
       onCancelError?: null | ((err: Error) => void)
