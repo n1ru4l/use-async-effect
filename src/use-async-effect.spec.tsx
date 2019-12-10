@@ -28,7 +28,7 @@ it("calls the generator", () => {
 it("calls the generator again once a dependency changes", () => {
   const callable = jest.fn();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   let setState = (str: string) => {};
 
   const TestComponent: React.FC<{}> = () => {
@@ -283,6 +283,7 @@ it("onCancel second parameter for error handling", async done => {
   const TestComponent: React.FC<{}> = () => {
     useAsyncEffect(function*(onCancel) {
       onCancel(
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         () => {},
         err => {
           callable(err.message);
