@@ -25,14 +25,14 @@
   "typings": "dist/module/index.d.ts",
   "devDependencies": {
     "@testing-library/react": "9.4.0",
-    "@types/jest": "24.0.23",
-    "@types/react": "16.9.16",
-    "@typescript-eslint/eslint-plugin": "2.11.0",
-    "@typescript-eslint/parser": "2.11.0",
+    "@types/jest": "24.0.25",
+    "@types/react": "16.9.17",
+    "@typescript-eslint/eslint-plugin": "2.14.0",
+    "@typescript-eslint/parser": "2.14.0",
     "doctoc": "1.4.0",
-    "eslint": "6.7.2",
-    "eslint-config-prettier": "6.7.0",
-    "eslint-plugin-jest": "23.1.1",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.9.0",
+    "eslint-plugin-jest": "23.3.0",
     "eslint-plugin-react": "7.17.0",
     "husky": "3.1.0",
     "jest": "24.9.0",
@@ -41,9 +41,9 @@
     "react": "16.12.0",
     "react-dom": "16.12.0",
     "rimraf": "3.0.0",
-    "semantic-release": "15.13.31",
+    "semantic-release": "15.14.0",
     "ts-jest": "24.2.0",
-    "typescript": "3.7.3"
+    "typescript": "3.7.4"
   },
   "peerDependencies": {
     "react": "^16.8.6"
