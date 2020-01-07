@@ -10,7 +10,6 @@ Simplify your async `useEffect` code with a [generator function](https://develop
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [The problem](#the-problem)
 - [Example](#example)
   - [Before 😖](#before-)
@@ -20,8 +19,9 @@ Simplify your async `useEffect` code with a [generator function](https://develop
   - [Usage Instructions](#usage-instructions)
     - [Basic Usage](#basic-usage)
     - [Cancelling an in-flight `fetch` request](#cancelling-an-in-flight-fetch-request)
-    - [Clean-Up Handler](#cleanup-handler)
+    - [Cleanup Handler](#cleanup-handler)
     - [Setup eslint for `eslint-plugin-react-hooks`](#setup-eslint-for-eslint-plugin-react-hooks)
+    - [Usage with TypeScript](#usage-with-typescript)
 - [API](#api)
   - [`useAsyncEffect`](#useasynceffect)
 - [Contributing](#contributing)
@@ -103,7 +103,6 @@ const MyComponent = ({ filter }) => {
     [filter]
   );
 };
-
 ```
 
 ## Usage
@@ -128,15 +127,12 @@ import useAsyncEffect from "@n1ru4l/use-async-effect";
 
 const MyDoggoImage = () => {
   const [doggoImageSrc, setDoggoImageSrc] = useState(null);
-  useAsyncEffect(
-    function*() {
-      const { message } = yield fetch(
-        "https://dog.ceo/api/breeds/image/random"
-      ).then(res => res.json());
-      setDoggoImageSrc(message);
-    },
-    []
-  );
+  useAsyncEffect(function*() {
+    const { message } = yield fetch(
+      "https://dog.ceo/api/breeds/image/random"
+    ).then(res => res.json());
+    setDoggoImageSrc(message);
+  }, []);
 
   return doggoImageSrc ? <img src={doggoImageSrc} /> : null;
 };
@@ -155,20 +151,16 @@ import useAsyncEffect from "@n1ru4l/use-async-effect";
 
 const MyDoggoImage = () => {
   const [doggoImageSrc, setDoggoImageSrc] = useState(null);
-  useAsyncEffect(
-    function*(onCancel) {
-      const abortController = new AbortController();
-      onCancel(() => {
-        abortController.abort();
-      });
-      const { message } = yield fetch(
-        "https://dog.ceo/api/breeds/image/random",
-        { signal: abortController.signal }
-      );
-      setDoggoImageSrc(message);
-    },
-    []
-  );
+  useAsyncEffect(function*(onCancel) {
+    const abortController = new AbortController();
+    onCancel(() => {
+      abortController.abort();
+    });
+    const { message } = yield fetch("https://dog.ceo/api/breeds/image/random", {
+      signal: abortController.signal
+    });
+    setDoggoImageSrc(message);
+  }, []);
 
   return doggoImageSrc ? <img src={doggoImageSrc} /> : null;
 };
@@ -184,21 +176,16 @@ import useAsyncEffect from "@n1ru4l/use-async-effect";
 
 const MyDoggoImage = () => {
   const [doggoImageSrc, setDoggoImageSrc] = useState(null);
-  useAsyncEffect(
-    function*() {
-      const { message } = yield fetch(
-        "https://dog.ceo/api/breeds/image/random"
-      );
-      setDoggoImageSrc(message);
+  useAsyncEffect(function*() {
+    const { message } = yield fetch("https://dog.ceo/api/breeds/image/random");
+    setDoggoImageSrc(message);
 
-      const listener = () => {
-        console.log("I LOVE DOGGIES", message);
-      };
-      window.addEventListener("mousemove", listener);
-      return () => window.removeEventListener("mousemove", listener);
-    },
-    []
-  );
+    const listener = () => {
+      console.log("I LOVE DOGGIES", message);
+    };
+    window.addEventListener("mousemove", listener);
+    return () => window.removeEventListener("mousemove", listener);
+  }, []);
 
   return doggoImageSrc ? <img src={doggoImageSrc} /> : null;
 };
@@ -224,6 +211,43 @@ Add the following to your eslint config file:
   }
 }
 ```
+
+#### Usage with TypeScript
+
+Unfortunately, it is currently not possible to [to interfer the type of a yield expression based on the yielded value](https://github.com/microsoft/TypeScript/issues/32523).
+However, there is a workaround for typing yielded results.
+
+```tsx
+useAsyncEffect(function*() {
+  // without the type annotation `numericValue` would be of the type `any`
+  const numericValue: number = yield Promise.resolve(123);
+});
+```
+
+For complex use cases you can leverage some TypeScript utility types ([based on Conditional Types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#conditional-types)):
+
+```tsx
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
+
+useAsyncEffect(function*() {
+  const promise = fetchSomeData();
+  const result: ThenArg<typeof promise> = yield promise;
+});
+```
+
+Or the "shorter version" (less variable assignments):
+
+```tsx
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
+
+useAsyncEffect(function*() {
+  const result: ThenArg<ReturnType<
+    typeof fetchSomeData
+  >> = yield fetchSomeData();
+});
+```
+
+This is no ideal solution (and indeed prone to errors, due to typos or wrong type casting). However, it is still a bitter solution than go without types at all. In the future TypeScript might be able to improve the current situation.
 
 ## API
 

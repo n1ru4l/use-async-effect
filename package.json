@@ -66,7 +66,7 @@
     }
   },
   "lint-staged": {
-    "*.{yml,ts,tsx,js,json,md}": [
+    "*.{yml,ts,tsx,js,json}": [
       "prettier --write",
       "git add"
     ],
@@ -74,8 +74,9 @@
       "eslint",
       "git add"
     ],
-    "README.md": [
+    "*.md": [
       "doctoc",
+      "prettier --write",
       "git add"
     ]
   }
