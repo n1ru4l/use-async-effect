@@ -11,7 +11,7 @@ references:
 jobs:
   build-job:
     docker:
-      - image: circleci/node:8.16.0@sha256:366b8e06c7cfdf7d70e14f1ef204b35c4870ea4dc47b94cc08a3fc5e1c5ea8a4
+      - image: circleci/node:12
     working_directory: /tmp/workspace
     steps:
       - checkout
