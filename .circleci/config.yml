@@ -30,7 +30,7 @@ jobs:
 
   deploy-job:
     docker:
-      - image: circleci/node:8.16.0@sha256:90cf94eb025c69bdba3839d568bfd72c3c38277a2a7ee15a783a312d48cbb2c4
+      - image: circleci/node:12
     working_directory: /tmp/workspace
     steps:
       - checkout
