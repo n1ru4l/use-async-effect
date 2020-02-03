@@ -3,7 +3,8 @@
     "jsx": "react",
     "esModuleInterop": true,
     "declaration": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": ["ESNext", "DOM"]
   },
   "exclude": ["**/*.spec.ts", "**/*.spec.tsx"]
 }
