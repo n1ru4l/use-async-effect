@@ -1,16 +1,26 @@
 import { useEffect, useRef } from "react";
 
-// eslint-disable-next-line  @typescript-eslint/no-empty-function
-const noop = () => { };
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
+
+type GeneratorReturnValueType = void | (() => void);
+
+function* cast<T>(input: Promise<T>): Generator<Promise<T>, T> {
+  // eslint-disable-next-line
+  // @ts-ignore
+  return yield input;
+}
+
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
 
 export const useAsyncEffect = (
   createGenerator: (
     setCancelHandler: (
       onCancel?: null | (() => void),
       onCancelError?: null | ((err: Error) => void)
-    ) => void
-  ) => // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    Iterator<any, any, any>,
+    ) => void,
+    cast: <T>(promise: Promise<T>) => Generator<Promise<T>, T>
+  ) => Iterator<unknown, GeneratorReturnValueType>,
   deps: React.DependencyList
 ) => {
   const generatorRef = useRef(createGenerator);
@@ -27,7 +37,8 @@ export const useAsyncEffect = (
       (cancelHandler, cancelErrorHandler) => {
         onCancel = cancelHandler || noop;
         onCancelError = cancelErrorHandler || noop;
-      }
+      },
+      cast
     );
     let cleanupHandler = noop;
 
