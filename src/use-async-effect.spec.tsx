@@ -391,3 +391,20 @@ it("calls latest generator reference upon dependency change", async done => {
   unmount();
   done();
 });
+
+it("interfers the correct type with the typing helper", async done => {
+  const TestComponent: React.FC<{}> = () => {
+    useAsyncEffect(function*(setErrorHandler, cast) {
+      const a = yield* cast(
+        Promise.resolve({ type: "FOO" as "FOO", value: 1 })
+      );
+      expect(a).toEqual({ type: "FOO", value: 1 });
+    }, []);
+    return null;
+  };
+
+  const { unmount } = render(<TestComponent />);
+  await Promise.resolve();
+  unmount();
+  done();
+});

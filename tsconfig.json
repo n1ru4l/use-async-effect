@@ -4,7 +4,7 @@
     "esModuleInterop": true,
     "declaration": true,
     "skipLibCheck": true,
+    "downlevelIteration": true,
     "lib": ["ESNext", "DOM"]
-  },
-  "exclude": ["**/*.spec.ts", "**/*.spec.tsx"]
+  }
 }
