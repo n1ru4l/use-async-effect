@@ -39,6 +39,7 @@ jobs:
             - *js_deps_cache_key
             - *js_deps_backup_cache_key
       - run: yarn build
+      - run: node scripts/prepare-deploy-package-json.js
       - run: yarn semantic-release
 
 workflows:
