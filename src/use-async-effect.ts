@@ -11,8 +11,6 @@ function* cast<T>(input: Promise<T>): Generator<Promise<T>, T> {
   return yield input;
 }
 
-type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
-
 export const useAsyncEffect = (
   createGenerator: (
     setCancelHandler: (

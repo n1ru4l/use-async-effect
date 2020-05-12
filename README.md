@@ -17,21 +17,23 @@ const MyComponent = ({ filter }) => {
   const [data, setData] = React.useState(null);
 
   useAsyncEffect(
-    function*(onCancel, c) {
+    function* (onCancel, c) {
       const controller = new AbortController();
 
       onCancel(() => controller.abort());
 
       const data = yield* c(
         fetch("/data?filter=" + filter, {
-          signal: controller.signal
-        }).then(res => res.json())
+          signal: controller.signal,
+        }).then((res) => res.json())
       );
 
       setData(data);
     },
     [filter]
   );
+
+  return data ? <RenderData data={data} /> : null;
 };
 ```
 
@@ -96,8 +98,8 @@ const MyComponent = ({ filter }) => {
     const runHandler = async () => {
       try {
         const data = await fetch("/data?filter=" + filter, {
-          signal: controller.signal
-        }).then(res => res.json());
+          signal: controller.signal,
+        }).then((res) => res.json());
         if (isCanceled) {
           return;
         }
@@ -111,6 +113,8 @@ const MyComponent = ({ filter }) => {
       controller.abort();
     };
   }, [filter]);
+
+  return data ? <RenderData data={data} /> : null;
 };
 ```
 
@@ -124,21 +128,23 @@ const MyComponent = ({ filter }) => {
   const [data, setData] = useState(null);
 
   useAsyncEffect(
-    function*(onCancel, c) {
+    function* (onCancel, c) {
       const controller = new AbortController();
 
       onCancel(() => controller.abort());
 
       const data = yield* c(
         fetch("/data?filter=" + filter, {
-          signal: controller.signal
-        }).then(res => res.json())
+          signal: controller.signal,
+        }).then((res) => res.json())
       );
 
       setData(data);
     },
     [filter]
   );
+
+  return data ? <RenderData data={data} /> : null;
 };
 ```
 
@@ -154,9 +160,9 @@ import useAsyncEffect from "@n1ru4l/use-async-effect";
 
 const MyDoggoImage = () => {
   const [doggoImageSrc, setDoggoImageSrc] = useState(null);
-  useAsyncEffect(function*(_, c) {
+  useAsyncEffect(function* (_, c) {
     const { message } = yield* c(
-      fetch("https://dog.ceo/api/breeds/image/random").then(res => res.json())
+      fetch("https://dog.ceo/api/breeds/image/random").then((res) => res.json())
     );
     setDoggoImageSrc(message);
   }, []);
@@ -178,13 +184,13 @@ import useAsyncEffect from "@n1ru4l/use-async-effect";
 
 const MyDoggoImage = () => {
   const [doggoImageSrc, setDoggoImageSrc] = useState(null);
-  useAsyncEffect(function*(onCancel, c) {
+  useAsyncEffect(function* (onCancel, c) {
     const abortController = new AbortController();
     onCancel(() => abortController.abort());
     const { message } = yield c(
       fetch("https://dog.ceo/api/breeds/image/random", {
-        signal: abortController.signal
-      }).then(res => res.json())
+        signal: abortController.signal,
+      }).then((res) => res.json())
     );
     setDoggoImageSrc(message);
   }, []);
@@ -208,9 +214,9 @@ import useAsyncEffect from "@n1ru4l/use-async-effect";
 
 const MyDoggoImage = () => {
   const [doggoImageSrc, setDoggoImageSrc] = useState(null);
-  useAsyncEffect(function*(_, c) {
+  useAsyncEffect(function* (_, c) {
     const { message } = yield* c(
-      fetch("https://dog.ceo/api/breeds/image/random").then(res => res.json())
+      fetch("https://dog.ceo/api/breeds/image/random").then((res) => res.json())
     );
     setDoggoImageSrc(message);
 
@@ -251,7 +257,7 @@ Add the following to your eslint config file:
 We expose a helper function for TypeScript that allows interferring the correct Promise resolve type. It uses some type-casting magic under the hood and requires you to use the `yield*` keyword instead of the `yield` keyword.
 
 ```tsx
-useAsyncEffect(function*(setErrorHandler, c) {
+useAsyncEffect(function* (setErrorHandler, c) {
   const numericValue = yield* c(Promise.resolve(123));
   // type of numericValue is number 🎉
 });
