@@ -20,7 +20,7 @@ export const useAsyncEffect = (
     cast: <T>(promise: Promise<T>) => Generator<Promise<T>, T>
   ) => Iterator<unknown, GeneratorReturnValueType>,
   deps: React.DependencyList
-) => {
+): void => {
   const generatorRef = useRef(createGenerator);
 
   useEffect(() => {
