@@ -5,7 +5,7 @@ import { cleanup, render, act } from "@testing-library/react";
 afterEach(cleanup);
 
 it("can be used", () => {
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     useAsyncEffect(function* () {}, []);
     return null;
@@ -15,7 +15,7 @@ it("can be used", () => {
 
 it("calls the generator", () => {
   const callable = jest.fn();
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
       callable();
     }, []);
@@ -30,7 +30,7 @@ it("calls the generator again once a dependency changes", () => {
 
   let setState = (() => undefined) as (str: string) => void;
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     const [state, _setState] = React.useState<string>("hello");
     useAsyncEffect(
       function* () {
@@ -53,7 +53,7 @@ it("calls the generator again once a dependency changes", () => {
 it("yield can resolve a non promise object", () => {
   const callable = jest.fn();
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
       const value: string = yield "foobars";
       callable(value);
@@ -69,7 +69,7 @@ it("yield can resolve a non promise object", () => {
 it("yield can resolve a promise object", async () => {
   const callable = jest.fn();
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
       const value: string = yield Promise.resolve("foobars");
       callable(value);
@@ -88,7 +88,7 @@ it("yield can resolve a promise object", async () => {
 it("effect can be canceled", async () => {
   const callable = jest.fn();
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
       const value: string = yield Promise.resolve("foobars");
       callable(value);
@@ -112,7 +112,7 @@ it("effect can be canceled", async () => {
 it("calls a handler for canceling", async () => {
   const callable = jest.fn();
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* (onCancel) {
       onCancel(() => {
         callable("cancel");
@@ -135,7 +135,7 @@ it("calls a handler for canceling", async () => {
 it("does not call a undefined handler", async () => {
   const callable = jest.fn();
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* (onCancel) {
       onCancel(() => {
         callable("cancel");
@@ -158,7 +158,7 @@ it("does not call a undefined handler", async () => {
 it("does override cancel handler", async () => {
   const callable = jest.fn();
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* (onCancel) {
       onCancel(() => {
         callable("cancel");
@@ -182,7 +182,7 @@ it("does override cancel handler", async () => {
 });
 
 it("does resolve multiple yields in a row", async (done) => {
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
       const value: string = yield Promise.resolve("foobars");
       const value2: string = yield Promise.resolve("henlo");
@@ -198,7 +198,7 @@ it("does resolve multiple yields in a row", async (done) => {
 });
 
 it("does throw promise rejections", async (done) => {
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
       try {
         yield Promise.reject(new Error("Something went wrong."));
@@ -214,7 +214,7 @@ it("does throw promise rejections", async (done) => {
 });
 
 it("logs error about uncatched promises to the console", async (done) => {
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
       yield Promise.reject(new Error("Something went wrong."));
       done.fail("Should throw.");
@@ -231,7 +231,7 @@ it("logs error about uncatched promises to the console", async (done) => {
 
 it("onCancel is resetted after each yield", async (done) => {
   const callable = jest.fn();
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* (onCancel) {
       onCancel(() => {
         callable("foo");
@@ -252,7 +252,7 @@ it("onCancel is resetted after each yield", async (done) => {
 it("onCancel is run before a promise is resolved", async (done) => {
   const callable = jest.fn();
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* (onCancel) {
       onCancel(() => {
         callable("onCancel");
@@ -279,7 +279,7 @@ it("onCancel is run before a promise is resolved", async (done) => {
 it("onCancel second parameter for error handling", async (done) => {
   const callable = jest.fn();
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* (onCancel) {
       onCancel(
         // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -306,7 +306,7 @@ it("onCancel second parameter for error handling", async (done) => {
 it("calls a cleanup function returned by the generator when unmounting", async (done) => {
   const callable = jest.fn();
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
       yield Promise.resolve();
       return () => {
@@ -331,7 +331,7 @@ it("calls a clenup function returned by the generator when dependencies change",
 
   let setState: (i: number) => void = () => 1;
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     const [state, _setState] = React.useState(0);
     setState = _setState;
     useAsyncEffect(
@@ -364,7 +364,7 @@ it("calls latest generator reference upon dependency change", async (done) => {
   const callable = jest.fn();
   let setState: (i: number) => void = () => 1;
 
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     const [state, _setState] = React.useState(0);
     setState = _setState;
     useAsyncEffect(
@@ -392,10 +392,10 @@ it("calls latest generator reference upon dependency change", async (done) => {
 });
 
 it("interfers the correct type with the typing helper", async (done) => {
-  const TestComponent: React.FC<{}> = () => {
+  const TestComponent: React.FC = () => {
     useAsyncEffect(function* (setErrorHandler, cast) {
       const a = yield* cast(
-        Promise.resolve({ type: "FOO" as "FOO", value: 1 })
+        Promise.resolve({ type: "FOO" as const, value: 1 })
       );
       expect(a).toEqual({ type: "FOO", value: 1 });
     }, []);
