@@ -213,7 +213,7 @@ it("does throw promise rejections", async (done) => {
   render(<TestComponent />);
 });
 
-it("logs error about uncatched promises to the console", async (done) => {
+it("logs error about uncaught promises to the console", async (done) => {
   const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
       yield Promise.reject(new Error("Something went wrong."));
@@ -229,7 +229,7 @@ it("logs error about uncatched promises to the console", async (done) => {
   done();
 });
 
-it("onCancel is resetted after each yield", async (done) => {
+it("onCancel is reset after each yield", async (done) => {
   const callable = jest.fn();
   const TestComponent: React.FC = () => {
     useAsyncEffect(function* (onCancel) {
@@ -326,7 +326,7 @@ it("calls a cleanup function returned by the generator when unmounting", async (
   done();
 });
 
-it("calls a clenup function returned by the generator when dependencies change", async (done) => {
+it("calls a cleanup function returned by the generator when dependencies change", async (done) => {
   const callable = jest.fn();
 
   let setState: (i: number) => void = () => 1;
@@ -391,7 +391,7 @@ it("calls latest generator reference upon dependency change", async (done) => {
   done();
 });
 
-it("interfers the correct type with the typing helper", async (done) => {
+it("infers the correct type with the typing helper", async (done) => {
   const TestComponent: React.FC = () => {
     useAsyncEffect(function* (setErrorHandler, cast) {
       const a = yield* cast(
