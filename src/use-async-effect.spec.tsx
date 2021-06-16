@@ -213,6 +213,31 @@ it("does throw promise rejections", async (done) => {
   render(<TestComponent />);
 });
 
+it("does throw promise rejections in loops", async (done) => {
+  const TestComponent: React.FC = () => {
+    useAsyncEffect(function* () {
+      const value1 = yield Promise.resolve('foobar')
+      expect(value1).toEqual('foobar');
+
+      for(let i=0; i<=3; i++) {
+        try {
+          yield Promise.reject(new Error("Something went wrong."));
+          done.fail("Should throw");
+        } catch (err) {
+          expect(err.message).toEqual("Something went wrong.");
+        }
+      }
+
+      const value2 = yield Promise.resolve('hello')
+      expect(value2).toEqual('hello');
+
+      done();
+    }, []);
+    return null;
+  };
+  render(<TestComponent />);
+});
+
 it("logs error about uncaught promises to the console", async (done) => {
   const TestComponent: React.FC = () => {
     useAsyncEffect(function* () {
