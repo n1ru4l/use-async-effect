@@ -43,30 +43,37 @@ export const useAsyncEffect = (
     const run = async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let result: IteratorResult<any> = { value: undefined, done: false };
+      let lastError: Error | undefined = undefined;
+
       do {
-        result = generator.next(result.value);
-        if (result.value && result.value.then) {
-          try {
-            result.value = await result.value;
-          } catch (err) {
-            if (isCanceled) {
-              onCancelError(err);
-              return;
-            }
+        try {
+          result = !lastError
+            ? generator.next(result.value)
+            : generator.throw(lastError);
+          lastError = undefined;
+
+          if (result.value && result.value.then) {
             try {
-              generator.throw(err);
+              result.value = await result.value;
             } catch (err) {
-              console.error(`[use-async-effect] Unhandled promise rejection.`);
-              console.error(err);
-              return;
+              if (isCanceled) {
+                onCancelError(err);
+                return;
+              }
+
+              lastError = err;
             }
           }
-        }
-        if (isCanceled) {
+          if (isCanceled) {
+            return;
+          }
+          onCancel = noop;
+          onCancelError = noop;
+        } catch (err) {
+          console.error(`[use-async-effect] Unhandled promise rejection.`);
+          console.error(err);
           return;
         }
-        onCancel = noop;
-        onCancelError = noop;
       } while (result.done === false);
       if (result.value) {
         cleanupHandler = result.value;
