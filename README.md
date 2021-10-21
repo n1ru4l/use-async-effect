@@ -278,7 +278,7 @@ function useAsyncEffect(
     ) => void,
     cast: <T>(promise: Promise<T>) => Generator<Promise<T>, T>
   ) => Iterator<any, any, any>,
-  deps: React.DependencyList
+  deps?: React.DependencyList
 ): void;
 ```
 

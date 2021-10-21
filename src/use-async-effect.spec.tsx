@@ -50,6 +50,33 @@ it("calls the generator again once a dependency changes", () => {
   expect(callable).toHaveBeenCalledTimes(2);
 });
 
+
+it("calls the generator on each render if no dependency list given", () => {
+  const callable = jest.fn();
+
+  let setState = (() => undefined) as (str: string) => void;
+
+  const TestComponent: React.FC = () => {
+    const [, _setState] = React.useState<string>("hello");
+    useAsyncEffect(function* () {
+      callable();
+    });
+    setState = _setState;
+    return null;
+  };
+
+  render(<TestComponent />);
+
+  act(() => {
+    setState("aye");
+  });
+  act(() => {
+    setState("bye");
+  });
+
+  expect(callable).toHaveBeenCalledTimes(3);
+});
+
 it("yield can resolve a non promise object", () => {
   const callable = jest.fn();
 
