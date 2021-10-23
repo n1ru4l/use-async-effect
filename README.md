@@ -118,7 +118,7 @@ const MyComponent = ({ filter }) => {
 };
 ```
 
-### After 🤩
+### After :stuck_out_tongue_closed_eyes:
 
 ```jsx
 import React from "react";
